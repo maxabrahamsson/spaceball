@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
+import com.game.core.TextureManager;
 import com.game.core.UIManager;
 
 
@@ -23,6 +24,8 @@ public class Game implements ApplicationListener {
 	UIManager UIManager;
 	OrthographicCamera cam;
 	Rectangle glViewport;
+	
+	ShootManager ShootManager;
 	@Override
 	public void create() {	
 		Gdx.graphics.setDisplayMode(1000, 500, true);
@@ -30,20 +33,15 @@ public class Game implements ApplicationListener {
 		glViewport = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());	
 		TextureManager=new TextureManager();
-		UIManager=new UIManager();
+		UIManager=new UIManager(TextureManager);
 		TextureManager.AddRegion("ball", 0, 0, 100, 100);
 		TextureManager.AddRegion("floor", 0, 100, 256, 50);
 		TextureManager.AddRegion("basket", 100, 0, 112, 75);
+		TextureManager.AddRegion("arrow", 0, 150, 112, 60);
 		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth()*2,Gdx.graphics.getHeight(),false));
 		
-		Image image = new Image(TextureManager.getTextureByTag("ball"), Scaling.none, Align.TOP);
-		image.height = image.getPrefHeight();
-		image.width = image.getPrefWidth();
-		image.x = 50;
-		image.y = 50;
-		UIManager.GetStage("oyun").addActor(image);
 		
-		image = new Image(TextureManager.getTextureByTag("floor"), Scaling.fillX, Align.TOP);
+		Image image = new Image(TextureManager.getTextureByTag("floor"), Scaling.fillX, Align.TOP);
 		image.height = image.getPrefHeight();
 		image.width = 1000;
 		image.x = 0;
@@ -56,6 +54,9 @@ public class Game implements ApplicationListener {
 		image.x = 1000;
 		image.y = 100;
 		UIManager.GetStage("oyun").addActor(image);
+
+		
+		ShootManager=new ShootManager(UIManager);
 	}
 	@Override
 	public void render() {			

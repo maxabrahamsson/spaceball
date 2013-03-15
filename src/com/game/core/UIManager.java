@@ -9,9 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class UIManager {
 	private Hashtable<String, Stage> Stages=new Hashtable<String, Stage>();
 	private String CurrentStage=null;
-	public UIManager()
+	private TextureManager TextureManager;
+	public UIManager(TextureManager textureManager)
 	{
-
+		TextureManager=textureManager;
+	}
+	public TextureManager getTextureManager()
+	{
+		return TextureManager;
 	}
 	public void AddStage(String name,Stage stage)
 	{

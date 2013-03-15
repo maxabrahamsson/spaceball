@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
-import com.game.core.Drawable;
 
-public class Projectile extends Drawable {
+public class Projectile {
 	private Image image;
 	private boolean isPhysical=false;
 	public Projectile(TextureRegion texture,int xPos,int yPos)
@@ -18,11 +17,6 @@ public class Projectile extends Drawable {
 		image.width = image.getPrefWidth();
 		image.x = xPos;
 		image.y = yPos;
-	}
-	@Override
-	public void Draw(SpriteBatch s) {
-		// TODO Auto-generated method stub
-	
 	}
 	
 }
