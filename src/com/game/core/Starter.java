@@ -1,6 +1,7 @@
-package com.game;
+package com.game.core;
 
 import com.badlogic.gdx.backends.jogl.JoglApplication;
+import com.game.logic.Game;
 
 public class Starter {
 
