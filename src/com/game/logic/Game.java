@@ -37,7 +37,7 @@ public class Game implements ApplicationListener {
 		UIManager=new UIManager(TextureManager);
 		TextureManager.AddRegion("ball", 0, 0, 100, 100);
 		TextureManager.AddRegion("floor", 0, 100, 256, 50);
-		TextureManager.AddRegion("basket", 100, 0, 112, 75);
+		TextureManager.AddRegion("basket", 256, 0, 256, 355);
 		TextureManager.AddRegion("arrow", 0, 150, 100, 36);
 		TextureManager.AddRegion("debugPointer", 0, 186, 29, 29);
 		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false));
@@ -45,7 +45,7 @@ public class Game implements ApplicationListener {
 		
 		Image image = new Image(TextureManager.getTextureByTag("floor"), Scaling.fillX, Align.TOP);
 		image.height = image.getPrefHeight();
-		image.width = 500;
+		image.width = 800;
 		image.x = 0;
 		image.y = 0;
 		UIManager.GetStage("oyun").addActor(image);
@@ -53,8 +53,8 @@ public class Game implements ApplicationListener {
 		image = new Image(TextureManager.getTextureByTag("basket"), Scaling.none, Align.TOP);
 		image.height = image.getPrefHeight();
 		image.width = image.getPrefHeight();
-		image.x = 400;
-		image.y = 100;
+		image.x = Gdx.graphics.getWidth()-image.width;
+		image.y = 25;
 		UIManager.GetStage("oyun").addActor(image);
 
 		

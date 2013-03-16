@@ -51,8 +51,8 @@ public class ShootManager {
 				return true;		
 			}			
 		};
-		image.height = image.getPrefHeight();
-		image.width = image.getPrefHeight();
+		image.height = 50;
+		image.width = 50;
 		image.x = 100;
 		image.y = 100;
 		image.originX=image.width/2;
@@ -101,8 +101,16 @@ public class ShootManager {
 	{
 		setArrowState(false);
 		isReady=false;
-		UIManager.GetStage("oyun").findActor("arrow").visible=false;
-		Projectile=new Projectile((Image)UIManager.GetStage("oyun").findActor("ball"),new Vector2(x,y));
+		Actor arrow=UIManager.GetStage("oyun").findActor("arrow");
+		arrow.visible=false;
+		
+		Vector2 temp=new Vector2(x,y);
+		Widget.toScreenCoordinates((Actor)UIManager.GetStage("oyun").findActor("ball"), temp);
+		
+		float dx=temp.x-arrow.x;
+		float dy=temp.y-arrow.y;
+		
+		Projectile=new Projectile((Image)UIManager.GetStage("oyun").findActor("ball"),new Vector2(dx,dy));
 		Projectile.isPhysical=true;
 	}
 	public void Update()

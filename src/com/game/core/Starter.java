@@ -11,7 +11,7 @@ public class Starter {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		new JoglApplication(new Game(),"pencere",500,500,false);
+		new JoglApplication(new Game(),"pencere",800,640,false);
 		
 	}
 
