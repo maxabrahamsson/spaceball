@@ -70,6 +70,7 @@ public class Game implements ApplicationListener {
 			cam.update();
 			cam.apply(gl);
 			UIManager.Draw();
+			ShootManager.Update();
 		}
 		Gdx.graphics.getGL10().glFlush();	
 	}

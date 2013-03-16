@@ -14,6 +14,7 @@ public class ShootManager {
 	private boolean isReady=true;
 	private UIManager UIManager;
 	private Image Indicator;
+	private Projectile Projectile;
 	public ShootManager(UIManager uiManager)
 	{
 		UIManager=uiManager;	
@@ -35,7 +36,7 @@ public class ShootManager {
 			public void touchUp(float x,float y,int pointer)
 			{
 				pointArrowTo(x,y);
-				launchProjectile();
+				launchProjectile(x,y);
 			}
 			@Override
 			public void touchDragged(float x,float y,int pointer)
@@ -54,6 +55,8 @@ public class ShootManager {
 		image.width = image.getPrefHeight();
 		image.x = 100;
 		image.y = 100;
+		image.originX=image.width/2;
+		image.originY=image.height/2;
 		image.visible=true;
 		UIManager.GetStage("oyun").addActor(image);
 
@@ -87,21 +90,26 @@ public class ShootManager {
 		arrow.x=ball.x+ball.width/2;
 		arrow.y=ball.y+ball.height/2;
 		
-		System.out.println(arrow.width);
 		arrow.scaleX=(float) (Math.hypot(dx, dy)/100);
-		arrow.scaleY=arrow.scaleX;
-		
-		
+		arrow.scaleY=arrow.scaleX;		
 	}
 	public void setArrowState(boolean state)
 	{
 		UIManager.GetStage("oyun").findActor("arrow").visible=state;
 	}
-	public void launchProjectile()
+	public void launchProjectile(float x,float y)
 	{
 		setArrowState(false);
 		isReady=false;
 		UIManager.GetStage("oyun").findActor("arrow").visible=false;
-		
+		Projectile=new Projectile((Image)UIManager.GetStage("oyun").findActor("ball"),new Vector2(x,y));
+		Projectile.isPhysical=true;
+	}
+	public void Update()
+	{
+		if(!isReady)
+		{
+			Projectile.Update();
+		}
 	}
 }
