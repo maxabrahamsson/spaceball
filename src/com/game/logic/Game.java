@@ -28,22 +28,24 @@ public class Game implements ApplicationListener {
 	ShootManager ShootManager;
 	@Override
 	public void create() {	
-		Gdx.graphics.setDisplayMode(1000, 500, true);
+		
 		cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		glViewport = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());	
+		System.out.print(Gdx.graphics.getWidth());
 		TextureManager=new TextureManager();
 		UIManager=new UIManager(TextureManager);
 		TextureManager.AddRegion("ball", 0, 0, 100, 100);
 		TextureManager.AddRegion("floor", 0, 100, 256, 50);
 		TextureManager.AddRegion("basket", 100, 0, 112, 75);
-		TextureManager.AddRegion("arrow", 0, 150, 112, 60);
-		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth()*2,Gdx.graphics.getHeight(),false));
+		TextureManager.AddRegion("arrow", 0, 150, 100, 36);
+		TextureManager.AddRegion("debugPointer", 0, 186, 29, 29);
+		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false));
 		
 		
 		Image image = new Image(TextureManager.getTextureByTag("floor"), Scaling.fillX, Align.TOP);
 		image.height = image.getPrefHeight();
-		image.width = 1000;
+		image.width = 500;
 		image.x = 0;
 		image.y = 0;
 		UIManager.GetStage("oyun").addActor(image);
@@ -51,7 +53,7 @@ public class Game implements ApplicationListener {
 		image = new Image(TextureManager.getTextureByTag("basket"), Scaling.none, Align.TOP);
 		image.height = image.getPrefHeight();
 		image.width = image.getPrefHeight();
-		image.x = 1000;
+		image.x = 400;
 		image.y = 100;
 		UIManager.GetStage("oyun").addActor(image);
 

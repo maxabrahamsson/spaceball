@@ -12,7 +12,7 @@ public class TextureManager {
 	private Texture texture;
 	public TextureManager()
 	{
-		texture=new Texture(Gdx.files.internal("data/images.gif"));
+		texture=new Texture(Gdx.files.internal("data/images.png"));
 	}
 	public void AddRegion(String tag,int x,int y,int width,int height)
 	{
