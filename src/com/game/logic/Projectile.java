@@ -35,8 +35,6 @@ public class Projectile {
 			image.y+=v.y;
 			image.rotation+=wV;
 			
-			
-			
 			if(image.y <= 25)
 			{
 				image.y=25;
