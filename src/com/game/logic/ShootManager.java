@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Align;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Widget;
 import com.badlogic.gdx.utils.Scaling;
-import com.game.core.TextureManager;
 import com.game.core.Tools;
 import com.game.core.UIManager;
 
@@ -27,24 +27,18 @@ public class ShootManager implements ContactListener {
 	private boolean isReady=true;
 	private UIManager UIManager;
 	private Image Indicator;
-	private Projectile Projectile;
 	Body body;
 	World world;
 	public ShootManager (UIManager uiManager,World world)
 	{
 		UIManager=uiManager;	
 		this.world=world;
-		Image image = new Image(UIManager.getTextureManager().getTextureByTag("arrow"), Scaling.none, Align.LEFT,"arrow");
-		image.height = image.getPrefHeight();
-		image.width = image.getPrefHeight();
-		image.x = 0;
-		image.y = 0;
-		image.originX=0;
-		image.originY=image.height/2;
-		image.visible=false;
-		UIManager.GetStage("oyun").addActor(image);
+		Image ok=UIManager.AddImage("ok", Scaling.stretch, Align.LEFT, new Vector2(0,0));
+		ok.originX=0;
+		ok.originY=ok.height/2;
+		ok.visible=false;
 		
-		image = new Image(UIManager.getTextureManager().getTextureByTag("ball"), Scaling.stretch, Align.CENTER,"ball")
+		Image image = new Image(UIManager.getTexture("top"), Scaling.stretch, Align.CENTER,"top")
 		{
 			@Override
 			public void touchUp(float x,float y,int pointer)
@@ -81,46 +75,18 @@ public class ShootManager implements ContactListener {
 		body = world.createBody(boxBodyDef);
 
 		PolygonShape ps;
-		Vector2[] vv=new Vector2[30];
-		for(int i=0; i<vv.length; i++)
-		{
-			float der=i*360/vv.length;
-			float x=(float) (Math.cos(Math.toRadians(der))*image.width/2);
-			float y=(float) (Math.sin(Math.toRadians(der))*image.height/2);
-			vv[i]=new Vector2(x,y);
-		}
-		vv=Tools.Triangulate(vv);
-		for(int i=0; i<vv.length; i+=3)
-		{
-			ps = new PolygonShape();
-			Vector2[] temp=new Vector2[] {
-				new Vector2(vv[i+2].x,vv[i+2].y),
-				new Vector2(vv[i+1].x,vv[i+1].y),
-				new Vector2(vv[i].x,vv[i].y)
-			};
-			ps.set(temp);
-			body.createFixture(ps, 0.01f);
-		}
-		
-		
-		image = new Image(UIManager.getTextureManager().getTextureByTag("debugPointer"), Scaling.none, Align.LEFT,"point");
-		image.height = image.getPrefHeight();
-		image.width = image.getPrefHeight();
-		image.x = 0;
-		image.y = 0;
-		image.visible=false;
-		UIManager.GetStage("oyun").addActor(image);
-		
-	
+		CircleShape cs=new CircleShape();
+		cs.setRadius(image.width/2);
+		body.createFixture(cs, 0.01f);	
 	}
-
+	Body basketBirinciLevelbody2, basketBirinciLevelbody;
 	public void pointArrowTo(float x,float y)
 	{		
-		Image ball=(Image) UIManager.GetStage("oyun").findActor("ball");
-		Image arrow=(Image) UIManager.GetStage("oyun").findActor("arrow");
+		Image ball=(Image) UIManager.GetStage("oyun").findActor("top");
+		Image arrow=(Image) UIManager.GetStage("oyun").findActor("ok");
 		
 		Vector2 temp=new Vector2(x,y);
-		Widget.toScreenCoordinates((Actor)UIManager.GetStage("oyun").findActor("ball"), temp);
+		Widget.toScreenCoordinates((Actor)UIManager.GetStage("oyun").findActor("top"), temp);
 		
 		float dx=temp.x-arrow.x;
 		float dy=temp.y-arrow.y;
@@ -130,44 +96,53 @@ public class ShootManager implements ContactListener {
 			arrow.rotation+=180;
 		}
 
-		arrow.x=ball.x+ball.width/2;
-		arrow.y=ball.y+ball.height/2;
+		arrow.x=body.getPosition().x+ball.width/2;
+		arrow.y=body.getPosition().y+ball.height/2;
 		
 		arrow.scaleX=(float) (Math.hypot(dx, dy)/100);
 		arrow.scaleY=arrow.scaleX;		
 	}
 	public void setArrowState(boolean state)
 	{
-		UIManager.GetStage("oyun").findActor("arrow").visible=state;
+		UIManager.GetStage("oyun").findActor("ok").visible=state;
 	}
 	public void launchProjectile(float x,float y)
 	{
 		setArrowState(false);
 		isReady=false;
-		Actor arrow=UIManager.GetStage("oyun").findActor("arrow");
+		Actor arrow=UIManager.GetStage("oyun").findActor("ok");
 		arrow.visible=false;
 		
 		Vector2 temp=new Vector2(x,y);
-		Widget.toScreenCoordinates((Actor)UIManager.GetStage("oyun").findActor("ball"), temp);
+		Widget.toScreenCoordinates((Actor)UIManager.GetStage("oyun").findActor("top"), temp);
 		
 		float dx=temp.x-arrow.x;
 		float dy=temp.y-arrow.y;
 		
-		Actor ball=UIManager.GetStage("oyun").findActor("ball");
+		Actor ball=UIManager.GetStage("oyun").findActor("top");
 		float px=body.getPosition().x;
 		float py=body.getPosition().y;
-		body.applyLinearImpulse(dx*10, dy*10, px,py);
+		body.applyLinearImpulse(dx*100, dy*100, px,py);
 		
 	}
 	public void Update()
 	{
-		Actor ball=UIManager.GetStage("oyun").findActor("ball");
+		Actor ball=UIManager.GetStage("oyun").findActor("top");
 		ball.x=body.getPosition().x-ball.width/2;
 		ball.y=body.getPosition().y-ball.height/2;
 		ball.rotation=(float) Math.toDegrees(body.getAngle());
-		 
+		if(
+				body.getPosition().x>Gdx.graphics.getWidth()-350-20 &&
+				body.getPosition().x<Gdx.graphics.getWidth()-350+20 &&
+				body.getPosition().y>340-10 &&
+				body.getPosition().y<340+10
+		)
+		{
+			
+		}
 		if(!isReady)
 		{
+			
 			//Projectile.Update();
 		}
 	}
@@ -178,6 +153,10 @@ public class ShootManager implements ContactListener {
         Body b1=f1.getBody();
         Fixture f2=contact.getFixtureB();
         Body b2=f2.getBody();
+        if(b1==basketBirinciLevelbody || b2==basketBirinciLevelbody)
+        {
+        	
+        }
         if(b1==body)
         {
         	if(b2!=LastHit)

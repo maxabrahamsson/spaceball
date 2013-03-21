@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="libs/gdx-stb-truetype-natives.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-freetype-natives.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-freetype.jar"/>
+	<classpathentry kind="lib" path="libs/bodyeditor-loader-demo.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

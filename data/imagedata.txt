@@ -1,0 +1,39 @@
+imagedata.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+pota
+  rotate: false
+  xy: 2, 2
+  size: 213, 405
+  orig: 213, 405
+  offset: 0, 0
+  index: -1
+ok
+  rotate: false
+  xy: 100, 409
+  size: 99, 34
+  orig: 99, 34
+  offset: 0, 0
+  index: -1
+debug
+  rotate: false
+  xy: 475, 2
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: -1
+top
+  rotate: false
+  xy: 2, 409
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+taban
+  rotate: false
+  xy: 217, 2
+  size: 256, 50
+  orig: 256, 50
+  offset: 0, 0
+  index: -1
