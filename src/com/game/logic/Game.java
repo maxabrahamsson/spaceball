@@ -45,7 +45,7 @@ public class Game implements ApplicationListener {
     static final float BOX_STEP=1/45f;  
     static final int BOX_VELOCITY_ITERATIONS=6;  
     static final int BOX_POSITION_ITERATIONS=2; 
-    
+    Player player;
     
 	@Override
 	public void create() {	
@@ -56,12 +56,10 @@ public class Game implements ApplicationListener {
 		glViewport = new Rectangle(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		cam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());	
 
-		UIManager=new UIManager();	
-		ShootManager=new ShootManager(UIManager,world);
-		world.setContactListener(ShootManager);      
+    
 		BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/box2d.json"));
 		
-		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false));
+		
 
         PolygonShape groundBox = new PolygonShape();  
         groundBox.setAsBox((cam.viewportWidth), 5); 
@@ -84,8 +82,14 @@ public class Game implements ApplicationListener {
         Body sagKolonBody = world.createBody(sagKolon);  
         sagKolonBody.createFixture(duvarBox, 1.0f); 
 
-
+		
+		UIManager=new UIManager();	
+		UIManager.AddStage("oyun",new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false));
         UIManager.AddImage("taban",Scaling.fillX,Align.TOP,new Vector2(0,0),new Vector2(Gdx.graphics.getWidth(),50));
+
+		player=new Player(this);
+		ShootManager=new ShootManager(this);
+		world.setContactListener(ShootManager);  
 		Image pota=UIManager.AddImage("pota",Scaling.none,Align.LEFT,new Vector2(Gdx.graphics.getWidth()-250,25));
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.StaticBody;
@@ -111,6 +115,7 @@ public class Game implements ApplicationListener {
 			cam.apply(gl);
 			UIManager.Draw();
 			ShootManager.Update();
+			player.Update();
 		}
 		Gdx.graphics.getGL10().glFlush();	
 	}

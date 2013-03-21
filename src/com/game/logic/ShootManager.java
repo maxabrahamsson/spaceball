@@ -29,10 +29,12 @@ public class ShootManager implements ContactListener {
 	private Image Indicator;
 	Body body;
 	World world;
-	public ShootManager (UIManager uiManager,World world)
+	Game game;
+	public ShootManager (Game g)
 	{
-		UIManager=uiManager;	
-		this.world=world;
+		UIManager=g.UIManager;	
+		this.world=g.world;
+		game=g;
 		Image ok=UIManager.AddImage("ok", Scaling.stretch, Align.LEFT, new Vector2(0,0));
 		ok.originX=0;
 		ok.originY=ok.height/2;
@@ -61,8 +63,8 @@ public class ShootManager implements ContactListener {
 		};
 		image.height = 50;
 		image.width = 50;
-		image.x = 100;
-		image.y = 100;
+		image.x = g.player.getTutusPos().x;
+		image.y = g.player.getTutusPos().y;
 		image.originX=image.width/2;
 		image.originY=image.height/2;
 		image.visible=true;
@@ -70,8 +72,9 @@ public class ShootManager implements ContactListener {
 		
 		BodyDef boxBodyDef = new BodyDef();
 		boxBodyDef.type = BodyType.DynamicBody;
-		boxBodyDef.position.x = 125;
-		boxBodyDef.position.y = 125;
+		boxBodyDef.position.x = image.x+image.width/2;
+		boxBodyDef.position.y = image.y+image.height/2;
+		boxBodyDef.active=false;
 		body = world.createBody(boxBodyDef);
 
 		PolygonShape ps;
@@ -123,14 +126,18 @@ public class ShootManager implements ContactListener {
 		float px=body.getPosition().x;
 		float py=body.getPosition().y;
 		body.applyLinearImpulse(dx*100, dy*100, px,py);
+		body.setActive(true);
 		
 	}
 	public void Update()
 	{
 		Actor ball=UIManager.GetStage("oyun").findActor("top");
-		ball.x=body.getPosition().x-ball.width/2;
-		ball.y=body.getPosition().y-ball.height/2;
-		ball.rotation=(float) Math.toDegrees(body.getAngle());
+		if(body.isActive() && !isReady)
+		{
+			ball.x=body.getPosition().x-ball.width/2;
+			ball.y=body.getPosition().y-ball.height/2;
+			ball.rotation=(float) Math.toDegrees(body.getAngle());
+		}
 		if(
 				body.getPosition().x>Gdx.graphics.getWidth()-350-20 &&
 				body.getPosition().x<Gdx.graphics.getWidth()-350+20 &&
@@ -138,12 +145,15 @@ public class ShootManager implements ContactListener {
 				body.getPosition().y<340+10
 		)
 		{
-			
+			System.out.println("shot");
+			isReady=true;
+			body.setActive(false);
 		}
-		if(!isReady)
+		if(isReady)
 		{
-			
-			//Projectile.Update();
+			ball.x = game.player.getTutusPos().x;
+			ball.y = game.player.getTutusPos().y;		
+			body.setTransform(ball.x+ball.width/2, ball.y+ball.height/2, 0);
 		}
 	}
 	Body LastHit;

@@ -9,6 +9,13 @@ pota
   orig: 213, 405
   offset: 0, 0
   index: -1
+karakter
+  rotate: false
+  xy: 217, 54
+  size: 178, 271
+  orig: 178, 271
+  offset: 0, 0
+  index: -1
 ok
   rotate: false
   xy: 100, 409
